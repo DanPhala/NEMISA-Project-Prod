@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from ..utils import utils
 import requests, logging, json, os

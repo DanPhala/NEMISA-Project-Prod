@@ -1,7 +1,6 @@
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from twilio.rest import Client
 import requests, logging, json, os
