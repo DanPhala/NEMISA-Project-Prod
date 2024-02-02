@@ -2,7 +2,6 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from twilio.rest import Client
 import requests, logging, json, os
 
 MESSAGE = "Some Error Occured, Please Try Again."
@@ -222,21 +221,7 @@ def send_message(request, consultation_id):
 
 def whatsapp(request):
 
-    if request.method == 'POST':
-
-        account_sid = os.getenv('TWIILO_ACCOUNT_SID')
-        auth_token = os.getenv('TWIILO_AUTH_TOKEN')
-        client = Client(account_sid, auth_token)
-
-        message = client.messages.create(
-            from_='whatsapp:+14155238886',
-            body = request.POST.get('body'),
-            to = 'whatsapp:' + os.getenv('TWIILO_MOBILE_NO')
-        )
-
-        print(message.sid)
-
-        return redirect('home')
+    return redirect('home')
 
 
 def meeting(request):
