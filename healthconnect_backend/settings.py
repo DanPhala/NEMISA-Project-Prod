@@ -48,8 +48,8 @@ SESSION_COOKIE_AGE = 21600
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['.vercel.app']
 
 # Django Application Definition
 
