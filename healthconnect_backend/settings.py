@@ -13,7 +13,6 @@
 """
 
 import os
-from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -49,8 +48,8 @@ SESSION_COOKIE_AGE = 21600
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
-ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['healthconnect.com']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Django Application Definition
 
