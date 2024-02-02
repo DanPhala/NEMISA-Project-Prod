@@ -1,8 +1,6 @@
 from datetime import datetime, time
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from .form import PatientCreateForm, DoctorCreateForm
 from ..utils import utils

@@ -1,7 +1,4 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
 from django.contrib import messages
 from ..consultations.views import get_consultation_history, get_doctors_data
 import requests, logging, json, os

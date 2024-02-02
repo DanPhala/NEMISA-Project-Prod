@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
 from django.template import Template, Context
-# from django.template.loader import render_to_string
-import base64
-from pathlib import Path
 import mailtrap as mt
 from ..utils import utils
 import requests, logging, os, random
