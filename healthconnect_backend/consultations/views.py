@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from ..utils import utils
 from ..chats_and_feedback.views import chat_messages
-import requests, logging, json, os, random
+import requests, json, os, random
 
 MESSAGE = "Some Error Occured, Please Try Again."
 USER_MESSAGE = "Incorrect User Id Used, Please Try Again."
@@ -34,7 +34,7 @@ def get_doctors_data(request, user_id, jwt_token, token_type):
                 return doctors_data
             
     except requests.RequestException as e:
-        logging.error(f"Error Occurred When Requesting Doctor Data: {e}, User Id: {user_id}")
+        messages.error(request, f"Error Occurred When Requesting Doctor Data, User Id: {user_id}")
     
     messages.error(request, MESSAGE)
     return None
@@ -63,7 +63,7 @@ def get_consultation_history(request, user_id, jwt_token, token_type, is_patient
                 return consultation_history
             
     except requests.RequestException as e:
-        logging.error(f"Error Occurred When Requesting Consultations: {e}, User Id: {user_id}")
+        messages.error(request, f"Error Occurred When Requesting Consultations, User Id: {user_id}")
         
     messages.error(request, MESSAGE)
     return None
@@ -93,7 +93,7 @@ def consultation(request):
                 messages.error(request, USER_MESSAGE)
         
         except requests.RequestException as e:
-            logging.error(f"Error Occurred When Requesting Consultations: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occurred When Requesting Consultations, User Id: {user_id}")
     
     else:
         messages.error(request, METHOD_ERROR)
@@ -145,13 +145,13 @@ def make_consultation(request):
                             consultation_url = reverse('consultation_view', args=[consultation_info['consultation_id']])
                             return HttpResponseRedirect(consultation_url)
                     
-                    logging.error(f"Error Occured When Requesting Consultations, User Id: {user_id}")
+                    messages.error(request, f"Error Occured When Requesting Consultations, User Id: {user_id}")
                 
                 else:
                     messages.error(request, USER_MESSAGE)
         
             except requests.RequestException as e:
-                logging.error(f"Error Occured When Requesting Consultations: {e}, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Consultations, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -214,13 +214,13 @@ def consultation_view(request, consultation_id):
                         else:
                             messages.error(request, MESSAGE)
 
-                logging.error(f"Error Occured in Consultation View, User Id: {user_id}")
+                messages.error(request, f"Error Occured in Consultation View, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured in Consultation View: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured in Consultation View, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -257,13 +257,13 @@ def close_consultation(request, consultation_id):
                         consultation_url = reverse('consultation_view', args=[consultation_id])
                         return HttpResponseRedirect(consultation_url)
                 
-                logging.error(f"Error Occured When Consultation History, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Consultation History, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Consultation History: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Consultation History, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -317,13 +317,13 @@ def create_review(request, doctor_id):
                         else:
                             return redirect('consultation_view_doctor', api_response['data']['id'])
                 
-                logging.error(f"Error Occured When Creating Reviews, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Creating Reviews, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Creating Reviews: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Creating Reviews, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -359,13 +359,13 @@ def get_reviews_id(request, doctor_id):
 
                         return api_response['data']
                 
-                logging.error(f"Error Occured When Requesting Reviews, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Reviews, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Reviews: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Reviews, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -401,13 +401,13 @@ def get_reviews(request):
 
                         return api_response['data']
                 
-                logging.error(f"Error Occured When Requesting Reviews, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Reviews, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Reviews: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Reviews, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)

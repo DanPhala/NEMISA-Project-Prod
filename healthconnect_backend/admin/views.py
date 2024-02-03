@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from ..utils import utils
-import requests, logging, os, random
+import requests, os, random
 
-USER_MESSAGE = "Incorrect User Id Used, Please Try Again."
+USER_MESSAGE = "Incorrect User Id Used, e Try Again."
 JSON_DATA = 'application/json'
 METHOD_ERROR = "Incorrect Method Used, Please Try Again."
 REMOVED = "[Removed]"
@@ -52,7 +52,7 @@ def diseaseinfos(request):
                         table_data = api_response.get('data')
 
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Diseases Data: {e}: User Id: {user_id}")
+            messages.info(request, f"Error Occured When Requesting Diseases Data: User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -107,7 +107,7 @@ def health_news(request):
                 articles_slice = api_response.get('articles')[:12]
                         
     except Exception as e:
-            logging.error(f"Error Occured When Requesting News Articles: {e}")
+        messages.info("Error Occured When Requesting News Articles")
 
     if not articles_slice:
         articles_slice = utils.news_retrieval_error()
@@ -216,7 +216,7 @@ def sendmail(request):
     #             return render(request, CONTACT_EMAIL, {'status': "error", 'data': "Mailtrap is checking your domain credibility, it usually takes one business day"})
 
     #     except Exception as e:
-    #         logging.error(f"Error Occurred When Sending Email: {e}")
+    #               messages.info(request, f"Error Occurred When Sending Email: {e}")
 
-            
+       
     return render(request, CONTACT_EMAIL, {'status': "success", 'data': "Email sent successfully"})

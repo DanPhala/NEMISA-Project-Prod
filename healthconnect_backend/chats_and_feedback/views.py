@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-import requests, logging, json, os
+import requests, json, os
 
 MESSAGE = "Some Error Occured, Please Try Again."
 USER_MESSAGE = "Incorrect User Id Used, Please Try Again."
@@ -50,13 +50,13 @@ def post_feedback(request, doctor_id, consultation_id):
                         consultation_url = reverse('consultation_view', args=[consultation_id])
                         return HttpResponseRedirect(consultation_url)
                 
-                logging.error(f"Error Occured When Requesting FeedBack Data, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting FeedBack Data, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting FeedBack Data: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting FeedBack Data, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -100,13 +100,13 @@ def user_feedback(request, user_id):
 
                         return api_response.get('data')
                 
-                logging.error(f"Error Occured When Requesting FeedBack Data, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting FeedBack Data, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting FeedBack Data: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting FeedBack Data, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -137,13 +137,13 @@ def chat_messages(request, consultation_id, sender_id = None):
                 if api_response.get('status') == "success":
                     return api_response.get('data')
             
-            logging.error(f"Error Occurred When Reading Chat Data, User Id: {user_id}")
+            messages.error(request, f"Error Occurred When Reading Chat Data, User Id: {user_id}")
 
         else:
             messages.error(request, USER_MESSAGE)
 
     except requests.RequestException as e:
-        logging.error(f"Error Occurred When Reading Chat Data: {e}, User Id: {user_id}")
+        messages.error(request, f"Error Occurred When Reading Chat Data, User Id: {user_id}")
     
     return None
 
@@ -173,13 +173,13 @@ def create_chat(request, consultation_id, message, sender_id = None):
                 if api_response.get('status') == "success":
                     return api_response.get('data')
 
-            logging.error(f"Creating Chat Data, User Id: {user_id}")
+            messages.error(request, f"Creating Chat Data, User Id: {user_id}")
 
         else:
             messages.error(request, USER_MESSAGE)
 
     except requests.RequestException as e:
-        logging.error(f"Creating Chat Data: {e}, User Id: {user_id}")
+        messages.error(request, f"Creating Chat Data, User Id: {user_id}")
     
     return None
 
@@ -205,13 +205,13 @@ def send_message(request, consultation_id):
                         messages.success(request, "Message Sent Successfully")
 
                     else:
-                        logging.error(f"Creating Chat Data, User Id: {user_id}")
+                        messages.error(request, f"Creating Chat Data, User Id: {user_id}")
 
                 else:
                     messages.error(request, USER_MESSAGE)
 
             except requests.RequestException as e:
-                logging.error(f"Creating Chat Data: {e}, User Id: {user_id}")
+                messages.error(request, f"Creating Chat Data, User Id: {user_id}")
             
         else:
             messages.error(request, MESSAGE)

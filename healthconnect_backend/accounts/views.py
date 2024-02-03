@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from .form import PatientCreateForm, DoctorCreateForm
 from ..utils import utils
-import requests, logging, json, os
+import requests, json, os
 
 MESSAGE = "Some Error Occured, Please Try Again."
 CONSULTATION_TEMPLATE = 'patient/consult_a_doctor/consult_a_doctor.html'
@@ -52,7 +52,6 @@ def signup_patient(request):
     
         except requests.RequestException as e:
             messages.info(request, "Please Make Sure All Required Fields are Filled Out Correctly")
-            logging.error(f"Error Occured During Sign Up Request: {e}: Patient")
             return redirect(reverse('register'))
 
     else:
@@ -108,7 +107,6 @@ def signup_doctor(request):
             
         except requests.RequestException as e:
             messages.info(request, "Please Make Sure All Required Fields are Filled Out Correctly")
-            logging.error(f"Error Occured During Sign Up Request: {e}: Doctor")
             return redirect(reverse('register'))
         
     else:
@@ -146,12 +144,12 @@ def get_user(request):
                     return render(request, 'users-profile.html', { 'profile_data': response_data })
 
             
-            logging.error(f"Error Occured When Requesting for Doctors Data: {e}: User Id: {user_id}")
+            messages.info(request, MESSAGE)
                 
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting User Data: {e}: User Id: {user_id}")
+            messages.info(request, f"Error Occured When Requesting User Data: User Id: {user_id}")
 
-    messages.error("Could not retrieve user information.")
+    messages.info(request, MESSAGE)
     return render(request, 'users-profile.html', { 'profile_data': utils.get_random_user() })
 
 
@@ -199,10 +197,10 @@ def savedata(request, user_id):
                 return redirect(reverse('patient_profile', args=[user_id]))            
             
             else:
-                messages.error(request, "Incorrect User Id used.")
+                messages.info(request, MESSAGE)
 
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Updating User Data: {e}: User Id: {user_id}")
+            messages.info(request, MESSAGE)
             return None
         
     else:

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .form import LoginForm
 from django.contrib import messages
-import requests, logging, os
+import requests, os
 
 MESSAGE = "Some Error Occured, Please Try Again."
 FORM_DATA = 'application/x-www-form-urlencoded'
@@ -55,7 +55,7 @@ def login_patient(request):
             return redirect(reverse('login'))
 
         except requests.RequestException as e:
-            logging.error(f"Error Occured During Login Request: {e}: Patient")
+            messages.error(request, "Error Occured During Login Request, Patient")
             return redirect(reverse('login'))
         
     else:
@@ -108,7 +108,7 @@ def login_doctor(request):
             return redirect(reverse('login'))
 
         except requests.RequestException as e:
-            logging.error(f"Error Occured During Login Request: {e}: Doctor")
+            messages.error(request, "Error Occured During Login Request, Doctor")
             return redirect(reverse('login'))
 
     else:
@@ -161,7 +161,7 @@ def login_admin(request):
             return redirect(reverse('login'))
         
         except requests.RequestException as e:
-            logging.error(f"Error Occured During Login Request: {e}: Admin")
+            messages.error(request, "Error Occured During Login Request, Admin")
             return redirect(reverse('login'))
 
     else:
@@ -208,7 +208,7 @@ def logout(request):
             return redirect(reverse('home'))
             
         except requests.RequestException as e:
-            logging.error(f"Error Occured During Logout Request: {e}: User Id: {user_id}")
+            messages.error(request, "Error Occured During Logout Request, User Id: {user_id}")
             request.session.clear()
             return redirect(reverse('home'))
 

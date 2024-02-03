@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from ..utils import utils
-import requests, logging, json, os
+import requests, json, os
 
 MESSAGE = "Some Error Occured, Please Try Again."
 USER_MESSAGE = "Incorrect User Id Used, Please Try Again."
@@ -55,13 +55,13 @@ def all_posts(request):
                         
                         return render(request, POSTS_TEMPLATE, { 'all_posts': api_response_data} )
                 
-                logging.error(f"Error Occured When Requesting Posts Data, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Posts Data, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Posts Data: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Posts Data, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -121,13 +121,13 @@ def search_posts(request):
                         
                         return render(request, POSTS_TEMPLATE, { 'all_posts': api_response_data} )
                 
-                logging.error(f"Error Occured When Requesting Posts Data, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Posts Data, User Id: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Posts Data: {e}, User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Posts Data, User Id: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -170,14 +170,14 @@ def create_post(request):
                             messages.info(request, "Successfully Created a Post")
                             return redirect('all_posts')
                     
-                    logging.error(f"Error Occured When Creating Post, User Id: {user_id}")
+                    messages.error(request, f"Error Occured When Creating Post, User Id: {user_id}")
                     messages.error(request, "Failed to Create a Post")
                 
                 else:
                     messages.error(request, USER_MESSAGE)
         
             except requests.RequestException as e:
-                logging.error(f"Error Occured When Creating Post: {e}, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Creating Post, User Id: {user_id}")
                 messages.error(request, "Error Occurred While Creating a Post")
 
         else:
@@ -244,13 +244,13 @@ def get_post(request, post_id):
                             
                         return render(request, POST_TEMPLATE, {'post_details': api_response_data})
                 
-                logging.error(f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Post Data: {e}, Post ID: {post_id}, User ID: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -297,13 +297,13 @@ def update_post(request, post_id):
                             messages.info(request, "Post updated Successfully")
                             return api_response.get('data')
                     
-                    logging.error(f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
+                    messages.error(request, f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
                 
                 else:
                     messages.error(request, USER_MESSAGE)
         
             except requests.RequestException as e:
-                logging.error(f"Error Occured When Requesting Post Data: {e}, Post ID: {post_id}, User ID: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
 
         else:
             messages.error(request, "Missing Data, Please Try Again")
@@ -346,13 +346,13 @@ def delete_post(request, post_id):
                         messages.info(request, api_response.get('data'))
                         return api_response.get('data')
                 
-                logging.error(f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Post Data: {e}, Post ID: {post_id}, User ID: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Post Data, Post ID: {post_id}, User ID: {user_id}")
 
     else:
         messages.error(request, METHOD_ERROR)
@@ -397,13 +397,13 @@ def create_reply(request):
                             messages.info(request, "Successfully Created a Reply")
                             return redirect('get_post', post_id=post_id)
                     
-                    logging.error(f"Error Occured When Creating Reply, Post ID: {post_id}, User ID: {user_id}")
+                    messages.error(request, f"Error Occured When Creating Reply, Post ID: {post_id}, User ID: {user_id}")
                 
                 else:
                     messages.error(request, USER_MESSAGE)
         
             except requests.RequestException as e:
-                logging.error(f"Error Occured When Creating Reply: {e}, Post ID: {post_id}, User ID: {user_id}")
+                messages.error(request, f"Error Occured When Creating Reply, Post ID: {post_id}, User ID: {user_id}")
 
         else:
             messages.error(request, MESSAGE)
@@ -453,13 +453,13 @@ def vote(request):
                             messages.info(request, "Successfully Created a Reply")
                             return api_response.get('data')
                     
-                    logging.error(f"Error Occured When Creating Reply, User Id: {user_id}")
+                    messages.error(request, f"Error Occured When Creating Reply, User Id: {user_id}")
                 
                 else:
                     messages.error(request, USER_MESSAGE)
         
             except requests.RequestException as e:
-                logging.error(f"Error Occured When Creating Reply: {e}, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Creating Reply, User Id: {user_id}")
 
         else:
             messages.error(request, MESSAGE)

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 from ..consultations.views import get_consultation_history, get_doctors_data
-import requests, logging, json, os
+import requests, json, os
 
 MESSAGE = "Some Error Occured, Please Try Again."
 USER_MESSAGE = "Incorrect User Id Used, Please Try Again."
@@ -39,14 +39,14 @@ def get_disease(request, user_id):
 
                         return api_response.get('data')
                 
-                logging.error(f"Error Occured When Requesting Diseases Data: User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Diseases Data: User Id: {user_id}")
                 return None
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Diseases Data: {e}: User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Diseases Data, User Id: {user_id}")
             return None
 
     else:
@@ -86,14 +86,14 @@ def check_disease(request, user_id, disease_id):
 
                         return api_response.get('data')
                 
-                logging.error(f"Error Occured When Requesting Diseases Data, User Id: {user_id}")
+                messages.error(request, f"Error Occured When Requesting Diseases Data, User Id: {user_id}")
                 return None
             
             else:
                 messages.error(request, USER_MESSAGE)
       
         except requests.RequestException as e:
-            logging.error(f"Error Occured When Requesting Diseases Data: {e}: User Id: {user_id}")
+            messages.error(request, f"Error Occured When Requesting Diseases Data, User Id: {user_id}")
             return None
 
     else:
@@ -144,13 +144,13 @@ def create_disease(request):
                             
                             return render(request, CONSULTATION_TEMPLATE, { 'consultation_history': consultation_history, 'doctors_info': doctors_data, 'predicted_disesse': disease_data })
                     
-                    logging.error(f"Error Occured When Creating Disease Prediction, User ID: {user_id}")
+                    messages.error(request, f"Error Occured When Creating Disease Prediction, User ID: {user_id}")
                 
                 else:
                     messages.error(request, USER_MESSAGE)
         
             except requests.RequestException as e:
-                logging.error(f"Error Occured When Creating Disease Prediction: {e}, User ID: {user_id}")
+                messages.error(request, f"Error Occured When Creating Disease Prediction, User ID: {user_id}")
 
         else:
             messages.error(request, MESSAGE)
